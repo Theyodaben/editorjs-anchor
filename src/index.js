@@ -1,11 +1,7 @@
 import './index.css';
 
 export default class AnchorTune {
-
-    /**
-     * Current anchor
-     * @returns {bool}
-     */
+       
     static get isTune() {
         return true;
     }
@@ -15,9 +11,11 @@ export default class AnchorTune {
      *
      * @param api - Editor.js API
      * @param data - previously saved data
+     * @param block - 
      */
-    constructor({ api, data }) {
+    constructor({ api, data, block }) {
         this.api = api;
+        this.block = block;
         this.data = {
             anchor: undefined
         };
@@ -48,7 +46,6 @@ export default class AnchorTune {
     set anchor(anchor) {
         // Allow only the following characters
         anchor = anchor.replace(/[^a-z0-9_-]/gi, '');
-
         if (anchor.length > 0) {
             this.data.anchor = anchor;
         } else {
@@ -73,7 +70,7 @@ export default class AnchorTune {
         wrapperInput.classList.add(this._CSS.classInput);
         wrapperInput.value = this.anchor;
 
-        wrapperInput.addEventListener('input', (event) => {
+        wrapperInput.addEventListener('focusout', (event) => {
             // Save anchor and remove invalid charachers
             this.anchor = event.target.value;
             event.target.value = this.anchor;
@@ -92,7 +89,36 @@ export default class AnchorTune {
         if (!this.data.anchor) {
             return undefined;
         }
-
+        
+        this.updateIDCurrentBlock();        
         return this.data;
+    }
+    
+    updateIDCurrentBlock(){
+    
+      // on passe par le parent pour le stockage car si on modifi le div un save ce lance, et on boucle a l'infini
+      const vCurrent = document.querySelector("div[data-id = '" + this.block.id +"']");
+      // console(vCurrent);
+      // const vCurrent = document.querySelector("div.anchor-null");
+      if(this.anchor.trim() != '' && vCurrent.id != this.anchor){
+        vCurrent.id = this.anchor;
+        this.block.dispatchChange();
+      }
+    }
+
+    wrap(blockContent) {
+      //Ajoute un div qui va encadré le block en cours et stocker la valeur au démarrage de facon temporaire. (on a pas accés au div parent)
+      const myWrapper = document.createElement('div');
+      
+      myWrapper.append(blockContent);
+      myWrapper.classList.add('anchor');
+      
+      //Si une ancre est défini on affecte attribut ID
+      if (this.data.anchor) {
+        myWrapper.id = this.anchor;
+      }   
+      
+      return myWrapper;
+      
     }
 }
