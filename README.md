@@ -1,6 +1,6 @@
 # Anchor Block Tune for Editor.js 2.20
 Append field with anchor to any block.
-It"s a fork of [VolgaIgor/editorjs-anchor](https://github.com/VolgaIgor/editorjs-anchor), with un adding div with ID attribute set from anchor. So a link to anchor can be create with <a< href="#anchor"></a>
+It"s a fork of [VolgaIgor/editorjs-anchor](https://github.com/VolgaIgor/editorjs-anchor), with a adding DIV with ID attribute set from anchor. So a link to anchor can be create with <a< href="#anchor"></a>
 
 ## Preview
 ![Preview image](https://github.com/VolgaIgor/editorjs-anchor/raw/main/asset/screenshot.png)
